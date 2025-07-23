@@ -1,0 +1,372 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.6;
+    background: #f9f9f9;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Hero and Features Section (Video Backgrounds) */
+.hero, .features {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 100px 20px;
+    color: #fff;
+}
+
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.features {
+    padding: 100px 20px;
+}
+
+.video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+#bg-video, #features-bg-video, .project-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-content, .features-content {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem); /* Responsive font size */
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    margin-bottom: 30px;
+}
+
+.cta-button {
+    background: #0d0d0d;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    transition: background 0.3s ease;
+}
+
+.cta-button:hover {
+    background: #ff4a3d;
+}
+
+.features-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.feature {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px;
+    max-width: 300px;
+    text-align: center;
+}
+
+.feature i {
+    font-size: 2rem;
+    color: #ffa500;
+    margin-bottom: 20px;
+}
+
+.feature h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.feature p {
+    font-size: 1rem;
+    color: #fff;
+}
+
+/* Testimonials Section */
+.testimonials {
+    padding: 100px 20px;
+    background: #fff;
+    text-align: center;
+}
+
+.testimonials h2 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin-bottom: 30px;
+}
+
+.testimonial {
+    background: #f9f9f9;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial p {
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Image Scroller Section */
+.image-scroller {
+    padding: 100px 20px;
+    background: #f9f9f9;
+    text-align: center;
+}
+
+.image-scroller h2 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin-bottom: 30px;
+}
+
+.scroller-container {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.scroller {
+    display: flex;
+    animation: scroll 20s linear infinite;
+}
+
+.scroller:hover {
+    animation-play-state: paused;
+}
+
+.scroller-item {
+    flex: 0 0 auto;
+    width: clamp(200px, 25vw, 300px);
+    margin-right: 20px;
+    text-align: center;
+}
+
+.scroller-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.scroller-item p {
+    margin-top: 10px;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    color: #333;
+}
+
+/* Past Projects Section */
+.past-projects {
+    padding: 100px 20px;
+    background: #fff;
+    text-align: center;
+}
+
+.past-projects h2 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin-bottom: 30px;
+}
+
+.projects-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: clamp(20px, 5vw, 40px);
+}
+
+.project-item {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: clamp(300px, 90vw, 400px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    overflow: hidden;
+}
+
+.project-item h3 {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    margin-bottom: 10px;
+    color: #2575fc;
+}
+
+.project-item p {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.project-item strong {
+    color: #ff4a3d;
+}
+
+.video-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 100%;
+}
+
+.project-video {
+    width: 100%;
+    height: auto;
+    max-height: clamp(200px, 40vh, 300px);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    object-fit: contain;
+}
+
+.project-video:hover {
+    animation-play-state: paused;
+}
+
+/* Contact Section */
+.contact {
+    padding: 100px 20px;
+    background: #fff;
+    text-align: center;
+}
+
+.contact h2 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin-bottom: 30px;
+}
+
+.contact form {
+    max-width: clamp(300px, 90vw, 600px);
+    margin: 0 auto;
+}
+
+.contact input, .contact textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.contact button {
+    background: #2575fc;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.contact button:hover {
+    background: #1a5bbf;
+}
+
+/* Footer */
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+}
+
+.social-links a {
+    color: #fff;
+    margin: 0 10px;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #2575fc;
+}
+
+/* Video Fallback Styling */
+.video-fallback {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none; /* Hidden by default, shown if video fails */
+}
+
+/* Animation for Auto-Scrolling */
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Mobile and Tablet Responsiveness */
+@media (max-width: 1024px) {
+    .hero, .features {
+        padding: clamp(20px, 5vw, 50px);
+        min-height: clamp(40vh, 50vh, 100vh);
+    }
+
+    #bg-video, #features-bg-video {
+        object-fit: contain;
+    }
+
+    .feature {
+        max-width: clamp(250px, 80vw, 300px);
+    }
+
+    .project-item {
+        max-width: clamp(250px, 80vw, 400px);
+    }
+}
+
+@media (max-width: 768px) {
+    .desktop-video {
+        display: none;
+    }
+
+    .mobile-image, .video-fallback {
+        display: block;
+    }
+
+    .hero, .features {
+        padding: 15px 10px;
+        min-height: 40vh;
+    }
+
+    .features-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .feature {
+        margin: 10px 0;
+    }
+
+    .project-video {
+        max-height: clamp(150px, 30vh, 200px);
+    }
+}

@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.App {
+  text-align: center;
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* Custom gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Video Background and Content */
+.testimonials, .image-scroller, .past-projects, .contact {
+  position: relative;
+}
+
+.video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.video-background video,
+.video-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-background img {
+  display: none;
+}
+
+/* Scroller */
+.scroller-container {
+  overflow: hidden;
+}
+
+.scroller {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.animate-scroll {
+  animation: scroll 20s linear infinite;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.scroller-item {
+  display: inline-block;
+  margin: 0 1rem;
+}
+
+.scroller-item img {
+  width: 16rem;
+  height: 16rem;
+  object-fit: cover;
+}
+
+/* Project Videos */
+.project-video {
+  transition: all 0.3s ease;
+}
+
+.video-wrapper {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
