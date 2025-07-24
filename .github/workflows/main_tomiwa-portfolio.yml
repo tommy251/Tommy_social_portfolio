@@ -27,7 +27,7 @@ jobs:
         working-directory: ./frontend
         run: |
           npm install
-          npx craco build # <--- CHANGED THIS LINE: Use npx to explicitly run craco build
+          node node_modules/.bin/craco build # <--- THIS LINE SHOULD BE IN YOUR YAML
           npm run test --if-present
 
       - name: Upload artifact for deployment job
