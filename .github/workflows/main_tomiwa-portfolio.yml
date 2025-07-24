@@ -27,16 +27,18 @@ jobs:
         run: npm install -g yarn@1.22.22
 
       - name: Yarn install
+        working-directory: ./frontend
         run: yarn install
 
       - name: Build with CRACO
+        working-directory: ./frontend
         run: npx craco build
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: build
+          path: ./frontend/build
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,7 +54,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'tomiwa-portfolio-app' # Corrected to match your Web App name
+          app-name: 'tomiwa-portfolio-app' # Corrected to match your Web App
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_42B87D1EFC2D46B38A16A0C04D9EFE8E }}
