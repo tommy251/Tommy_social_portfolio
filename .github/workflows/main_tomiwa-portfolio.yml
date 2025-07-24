@@ -18,6 +18,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Add a step to list contents of frontend folder and node_modules/.bin
+      - name: Debugging - List frontend contents and craco permissions
+        working-directory: ./frontend
+        run: |
+          echo "Listing contents of ./frontend:"
+          ls -la
+          echo ""
+          echo "Listing contents of ./frontend/node_modules:"
+          ls -la node_modules/
+          echo ""
+          echo "Listing contents of ./frontend/node_modules/.bin/ and checking craco permissions:"
+          ls -la node_modules/.bin/
+          # Attempt to read the craco script content to ensure it's there
+          cat node_modules/.bin/craco || echo "Could not read node_modules/.bin/craco"
+          echo ""
+          echo "Listing contents of ./frontend/node_modules/@craco/craco/dist/bin/:"
+          ls -la node_modules/@craco/craco/dist/bin/
+          cat node_modules/@craco/craco/dist/bin/craco.js || echo "Could not read node_modules/@craco/craco/dist/bin/craco.js"
+          echo ""
+          # Check current shell PATH
+          echo "Current PATH:"
+          echo $PATH
+        continue-on-error: true # Allow this step to fail without stopping the workflow
+
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
@@ -27,16 +51,15 @@ jobs:
         working-directory: ./frontend
         run: |
           npm install
-          node node_modules/@craco/craco/dist/bin/craco.js build # <--- THIS IS THE UPDATED LINE
+          # Try the most direct approach again after debugging info
+          node node_modules/@craco/craco/dist/bin/craco.js build # Retrying this, as it's the most robust
           npm run test --if-present
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: ./frontend/build # <--- This targets the typical output directory for 'craco build'
-                                 # If your build output goes into a different folder (e.g., ./frontend/dist),
-                                 # you would change this path accordingly (e.g., path: ./frontend/dist)
+          path: ./frontend/build 
 
 
   deploy:
@@ -55,6 +78,5 @@ jobs:
         with:
           app-name: 'tomiwa-portfolio'
           slot-name: 'Production'
-          package: . # This assumes the downloaded artifact (the 'node-app') now contains just the compiled build output.
-                     # If the 'build' folder itself is what was uploaded as the artifact, this '.' will correctly point to its contents.
+          package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_42B87D1EFC2D46B38A16A0C04D9EFE8E }}
