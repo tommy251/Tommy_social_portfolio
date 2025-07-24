@@ -54,7 +54,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'tomiwa-portfolio-app' # Corrected to match your Web App
+          app-name: 'tomiwa-portfolio-app' # Matches your Web App name
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_42B87D1EFC2D46B38A16A0C04D9EFE8E }}
