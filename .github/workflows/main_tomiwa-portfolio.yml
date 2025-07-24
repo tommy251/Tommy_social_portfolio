@@ -49,6 +49,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
+          path: deploy-package
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -56,5 +57,5 @@ jobs:
         with:
           app-name: 'tomiwa-portfolio'
           slot-name: 'Production'
-          package: ${{ github.workspace }}/node-app
+          package: deploy-package
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_42B87D1EFC2D46B38A16A0C04D9EFE8E }}
