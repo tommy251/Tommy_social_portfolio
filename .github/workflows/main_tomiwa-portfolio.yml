@@ -24,6 +24,7 @@ jobs:
           node-version: '20.x'
 
       - name: npm install, build, and test
+        working-directory: ./frontend # <-- ADDED THIS LINE
         run: |
           npm install
           npm run build --if-present
@@ -33,7 +34,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .
+          path: ./frontend # <-- MODIFIED THIS LINE to upload only the frontend build
+                               # If your build output goes into a different folder (e.g., ./frontend/build or ./frontend/dist),
+                               # you should change this path accordingly (e.g., path: ./frontend/build)
+
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,5 +55,7 @@ jobs:
         with:
           app-name: 'tomiwa-portfolio'
           slot-name: 'Production'
-          package: .
+          package: . # This assumes the downloaded artifact is already the correct content for deployment.
+                     # If your build output (e.g., 'build' or 'dist' folder) needs to be specifically targeted
+                     # within the downloaded artifact, you might need to adjust this (e.g., 'package: ./build')
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_42B87D1EFC2D46B38A16A0C04D9EFE8E }}
