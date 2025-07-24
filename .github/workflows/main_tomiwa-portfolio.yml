@@ -13,63 +13,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read # This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
-
-      # Add a step to list contents of frontend folder and node_modules/.bin with more detail
-      - name: Debugging - Detailed file and permission check
-        working-directory: ./frontend
-        run: |
-          echo "--- Listing contents of ./frontend/node_modules/.bin/ and checking craco symlink/permissions ---"
-          ls -la node_modules/.bin/
-          echo ""
-          # Check what the 'craco' symlink points to, if it's a symlink
-          if [ -L node_modules/.bin/craco ]; then
-            echo "node_modules/.bin/craco is a symlink. Target:"
-            readlink node_modules/.bin/craco
-          fi
-          echo ""
-          # Read the content of the craco shim script
-          echo "--- Content of node_modules/.bin/craco ---"
-          cat node_modules/.bin/craco || echo "Could not read node_modules/.bin/craco"
-          echo ""
-          # Read the content of the actual craco.js source
-          echo "--- Content of node_modules/@craco/craco/dist/bin/craco.js ---"
-          cat node_modules/@craco/craco/dist/bin/craco.js || echo "Could not read node_modules/@craco/craco/dist/bin/craco.js"
-          echo ""
-          echo "--- Current PATH ---"
-          echo $PATH
-        continue-on-error: true # Allow this step to fail without stopping the workflow
 
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
 
-      - name: npm install, build, and test
-        working-directory: ./frontend
-        run: |
-          npm install
-          # Try using npm run build directly again, but ensure permissions are set beforehand,
-          # and also try a slightly different invocation if the direct `node` command didn't work.
-          
-          # Force execute permissions on the craco shim/executable
-          # This should be redundant if npm is doing its job, but for stubborn issues:
-          chmod +x node_modules/.bin/craco || true # `|| true` prevents this chmod from failing the step
+      - name: Use Yarn
+        run: npm install -g yarn@1.22.22
 
-          # Explicitly use npm to run the build script as defined in package.json
-          npm run build # Reverting to the npm script command
+      - name: Yarn install
+        run: yarn install
 
-          npm run test --if-present
+      - name: Build with CRACO
+        run: npx craco build
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: ./frontend/build 
-
+          path: build
 
   deploy:
     runs-on: ubuntu-latest
@@ -80,12 +47,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
-      
+
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'tomiwa-portfolio'
+          app-name: 'tomiwa-portfolio-app' # Corrected to match your Web App name
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_42B87D1EFC2D46B38A16A0C04D9EFE8E }}
