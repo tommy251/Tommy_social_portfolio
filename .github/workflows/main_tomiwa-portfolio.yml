@@ -27,7 +27,7 @@ jobs:
         working-directory: ./frontend
         run: |
           npm install
-          node node_modules/.bin/craco build # <--- THIS LINE SHOULD BE IN YOUR YAML
+          node node_modules/@craco/craco/dist/bin/craco.js build # <--- THIS IS THE UPDATED LINE
           npm run test --if-present
 
       - name: Upload artifact for deployment job
