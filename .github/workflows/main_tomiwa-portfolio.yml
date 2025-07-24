@@ -24,7 +24,7 @@ jobs:
           node-version: '20.x'
 
       - name: npm install, build, and test
-        working-directory: ./frontend # <--- This ensures npm commands run in the 'frontend' directory
+        working-directory: ./frontend # <--- COMMENT REMOVED HERE, now it's an active instruction
         run: |
           npm install
           npm run build # Running the build script directly, as it's confirmed in package.json
