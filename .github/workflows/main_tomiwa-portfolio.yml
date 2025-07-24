@@ -24,10 +24,10 @@ jobs:
           node-version: '20.x'
 
       - name: npm install, build, and test
-        working-directory: ./frontend # <--- COMMENT REMOVED HERE, now it's an active instruction
+        working-directory: ./frontend
         run: |
           npm install
-          npm run build # Running the build script directly, as it's confirmed in package.json
+          npx craco build # <--- CHANGED THIS LINE: Use npx to explicitly run craco build
           npm run test --if-present
 
       - name: Upload artifact for deployment job
