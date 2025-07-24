@@ -18,27 +18,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Add a step to list contents of frontend folder and node_modules/.bin
-      - name: Debugging - List frontend contents and craco permissions
+      # Add a step to list contents of frontend folder and node_modules/.bin with more detail
+      - name: Debugging - Detailed file and permission check
         working-directory: ./frontend
         run: |
-          echo "Listing contents of ./frontend:"
-          ls -la
-          echo ""
-          echo "Listing contents of ./frontend/node_modules:"
-          ls -la node_modules/
-          echo ""
-          echo "Listing contents of ./frontend/node_modules/.bin/ and checking craco permissions:"
+          echo "--- Listing contents of ./frontend/node_modules/.bin/ and checking craco symlink/permissions ---"
           ls -la node_modules/.bin/
-          # Attempt to read the craco script content to ensure it's there
+          echo ""
+          # Check what the 'craco' symlink points to, if it's a symlink
+          if [ -L node_modules/.bin/craco ]; then
+            echo "node_modules/.bin/craco is a symlink. Target:"
+            readlink node_modules/.bin/craco
+          fi
+          echo ""
+          # Read the content of the craco shim script
+          echo "--- Content of node_modules/.bin/craco ---"
           cat node_modules/.bin/craco || echo "Could not read node_modules/.bin/craco"
           echo ""
-          echo "Listing contents of ./frontend/node_modules/@craco/craco/dist/bin/:"
-          ls -la node_modules/@craco/craco/dist/bin/
+          # Read the content of the actual craco.js source
+          echo "--- Content of node_modules/@craco/craco/dist/bin/craco.js ---"
           cat node_modules/@craco/craco/dist/bin/craco.js || echo "Could not read node_modules/@craco/craco/dist/bin/craco.js"
           echo ""
-          # Check current shell PATH
-          echo "Current PATH:"
+          echo "--- Current PATH ---"
           echo $PATH
         continue-on-error: true # Allow this step to fail without stopping the workflow
 
@@ -51,8 +52,16 @@ jobs:
         working-directory: ./frontend
         run: |
           npm install
-          # Try the most direct approach again after debugging info
-          node node_modules/@craco/craco/dist/bin/craco.js build # Retrying this, as it's the most robust
+          # Try using npm run build directly again, but ensure permissions are set beforehand,
+          # and also try a slightly different invocation if the direct `node` command didn't work.
+          
+          # Force execute permissions on the craco shim/executable
+          # This should be redundant if npm is doing its job, but for stubborn issues:
+          chmod +x node_modules/.bin/craco || true # `|| true` prevents this chmod from failing the step
+
+          # Explicitly use npm to run the build script as defined in package.json
+          npm run build # Reverting to the npm script command
+
           npm run test --if-present
 
       - name: Upload artifact for deployment job
