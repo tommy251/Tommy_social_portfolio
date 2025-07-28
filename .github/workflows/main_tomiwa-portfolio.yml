@@ -2,7 +2,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - tomiwa-portfolio
+name: Build and deploy Node.js and Python app to Azure Web App - tomiwa-portfolio
 
 on:
   push:
@@ -35,11 +35,28 @@ jobs:
         working-directory: ./frontend
         run: npx craco build
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11' # Match Azure's Python runtime
+
+      - name: Install Python dependencies
+        working-directory: ./backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Create deployment package
+        run: |
+          mkdir deploy-package
+          cp -r ./frontend/build/. deploy-package/
+          cp -r ./backend/. deploy-package/
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: node-app
-          path: ./frontend/build
+          name: app-package
+          path: deploy-package
 
   deploy:
     runs-on: ubuntu-latest
@@ -49,7 +66,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: node-app
+          name: app-package
           path: deploy-package
 
       - name: 'Deploy to Azure Web App'
