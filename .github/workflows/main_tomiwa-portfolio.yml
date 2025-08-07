@@ -28,12 +28,21 @@ jobs:
         run: npm install -g yarn@1.22.22
 
       - name: Yarn install
-        working-directory: ./frontend
+        working-directory: .
         run: yarn install
 
       - name: Build with CRACO
-        working-directory: ./frontend
-        run: npx craco build
+        working-directory: .
+        run: |
+          yarn add @craco/craco --ignore-scripts || true
+          npx craco build
+
+      - name: Check build output
+        run: |
+          if [ ! -d "build" ]; then
+            echo "Build failed: 'build' directory not found"
+            exit 1
+          fi
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -50,12 +59,14 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install -r requirements.txt
+        continue-on-error: true # Optional, if backend is optional
 
       - name: Create deployment package
         run: |
           mkdir deploy-package
-          cp -r ./frontend/build/. deploy-package/
-          cp -r ./backend/. deploy-package/
+          cp -r ./build/. deploy-package/
+          # Uncomment and adjust if backend is needed
+          # cp -r ./backend/. deploy-package/
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
