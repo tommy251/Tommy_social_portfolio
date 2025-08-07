@@ -1,5 +1,0 @@
-# .render.yml for tomsocialportfolio on Render
-prebuild:
-  - yarn install --production=false
-build:
-  - yarn build
