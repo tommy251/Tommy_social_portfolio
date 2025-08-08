@@ -1,4 +1,8 @@
-prebuild:
-  - pip install -r requirements.txt
-build:
-  - python server.py
+services:
+  - type: web
+    name: tomsocialportfolio
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: yarn install && yarn build
+    startCommand: npx serve -s build
