@@ -1,5 +1,4 @@
-# .render.yml for tomsocialportfolio on Render
 prebuild:
-  - yarn install --production=false
+  - pip install -r requirements.txt
 build:
-  - yarn build
+  - python server.py
